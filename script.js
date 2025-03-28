@@ -5,6 +5,11 @@ let upload = document.getElementById("upfile").addEventListener("click", uploadF
 function uploadFile() {
   let file = document.getElementById("chfile");
   const inp = file.files[0];
+
+  if(!inp){
+    alert('Please select a file to upload!')
+  }
+  
   const reader = new FileReader();
 
   reader.onload = function (event) {
@@ -23,11 +28,11 @@ function uploadFile() {
         code: res,
         timer: timerDuration,
       })
-    );
+    )
 
     document.getElementById("showCode").value = res;
     startTimer(timerDuration, document.getElementById("timer"), res);
-    // copyCode(res);
+    copyCode();
   };
   reader.readAsDataURL(inp);
 }
@@ -48,9 +53,7 @@ function startTimer(duration, display, code) {
   }, 1000);
 }
 
-let dnload = document
-  .getElementById("dnfile")
-  .addEventListener("click", downloadFile);
+let dnload = document.getElementById("dnfile").addEventListener("click", downloadFile);
 
 function downloadFile() {
   let code = document.getElementById("code").value;
@@ -67,7 +70,7 @@ function downloadFile() {
   }
 }
 
-function copyCode(code) {
+function copyCode() {
   document.getElementById("share").addEventListener("click", function () {
     code = document.getElementById("showCode").value;
     if (code) {
@@ -84,3 +87,19 @@ function copyCode(code) {
     }
   });
 }
+
+document.getElementById('code').addEventListener('keypress', function(event) {
+  if(event.code === 'Enter'){
+    document.getElementById('dnfile').click();
+  }
+});
+
+document.getElementById('chfile').addEventListener('keypress', function(event){
+  let inp = document.getElementById('chfile').file[0];
+  if(inp){
+    document.activeElement.blur();
+  }
+  if(event.key === 'Enter'){
+    document.getElementById('upfile').click();
+  }
+});
